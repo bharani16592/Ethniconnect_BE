@@ -2,7 +2,6 @@ package ethniconnect_backend.ChefCreateMenu;
 
 import ethniconnect_backend.ChefDetails.Chef;
 import ethniconnect_backend.ChefDetails.ChefRepository;
-import ethniconnect_backend.ChefDetails.ChefRequest;
 import ethniconnect_backend.Cuisines.CuisineCategoriesRepository;
 import ethniconnect_backend.Cuisines.CuisineCategory;
 import ethniconnect_backend.UserCredentials.UserCredentials;
@@ -11,12 +10,9 @@ import ethniconnect_backend.Zip.ZipCode;
 import ethniconnect_backend.Zip.Root;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.client.RestTemplate;
-import java.io.IOException;
+
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.*;
@@ -191,20 +187,22 @@ public class ChefMenuService  {
 //    }
     public ChefMenu updateChefMenu(ChefMenu chefMenu)
     {
+       //ChefMenu existingChefMenucuines = (ChefMenu) chefMenuRepository.findAllByCuisineCategory_Id(chefMenu.getCuisineCategory().getId());
         ChefMenu existingChefMenu=chefMenuRepository.findById(chefMenu.getId()).orElse(null);
-        existingChefMenu.setMenucategories(chefMenu.getMenucategories());
-        existingChefMenu.setMenu_item_image(chefMenu.getMenu_item_image());
-        existingChefMenu.setItem_name(chefMenu.getItem_name());
-        existingChefMenu.setMenu_item_price(chefMenu.getMenu_item_price());
-        existingChefMenu.setItem_ingredients(chefMenu.getItem_ingredients());
-        existingChefMenu.setItem_intresting_facts(chefMenu.getItem_intresting_facts());
-        existingChefMenu.setWeek(chefMenu.getWeek());
-        existingChefMenu.getCuisineCategory().setId(chefMenu.getCuisineCategory().getId());
+        int cuisineid = existingChefMenu.getCuisineCategory().getId();
+
+        existingChefMenu.setMenucategories(chefMenu.getMenucategories()!=null? chefMenu.getMenucategories() : existingChefMenu.getMenucategories());
+        existingChefMenu.setMenu_item_image(chefMenu.getMenu_item_image()!=null? chefMenu.getMenu_item_image() : existingChefMenu.getMenu_item_image());
+        existingChefMenu.setItem_name(chefMenu.getItem_name()!=null? chefMenu.getItem_name() : existingChefMenu.getItem_name());
+        existingChefMenu.setMenu_item_price(chefMenu.getMenu_item_price()!=0? chefMenu.getMenu_item_price() : existingChefMenu.getMenu_item_price());
+        existingChefMenu.setItem_ingredients(chefMenu.getItem_ingredients()!=null? chefMenu.getItem_ingredients() : existingChefMenu.getItem_ingredients());
+        existingChefMenu.setItem_intresting_facts(chefMenu.getItem_intresting_facts()!=null? chefMenu.getItem_intresting_facts() : existingChefMenu.getItem_intresting_facts());
+        existingChefMenu.setWeek(chefMenu.getWeek()!=null? chefMenu.getWeek() : existingChefMenu.getWeek());
+        existingChefMenu.getCuisineCategory().setId(cuisineid!=0? cuisineid: existingChefMenu.getCuisineCategory().getId());
         return chefMenuRepository.save(existingChefMenu);
 
 
     }
-
 
 //    public List<Chef> getChefByCuisineId(String cuisine_id){
 //
